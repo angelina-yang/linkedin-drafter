@@ -1,7 +1,6 @@
 // POST /api/contact
-// Consulting / feature-request / upsell inbound. v1 writes to the shared
-// Google Sheet webhook tagged `source: "tlin-contact"`. A later patch will
-// add Resend relay to angelina@twosetai.com once DNS is verified.
+// Consulting / feature-request / upsell inbound. Writes to the shared signup
+// webhook tagged `source: "tlin-contact"` — same destination as /api/register.
 
 import { NextRequest, NextResponse } from "next/server";
 import { getClientIp, isRateLimited } from "@/lib/rate-limit";
@@ -91,9 +90,10 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // TODO (Stage 6b): relay to angelina@twosetai.com via Resend once DNS is
-  // verified. Check process.env.RESEND_API_KEY and send in addition to the
-  // sheet log.
+  // Intentional: the signup webhook is the single source of truth for all Lab
+  // tool inbound (signups + contact + feature requests). Filterable, sortable,
+  // one inbox across all apps. Email relay was considered and rejected — adds
+  // noise without adding signal.
 
   return NextResponse.json({ success: true });
 }

@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Valid name required" }, { status: 400 });
     }
 
-    // 1. Log to the shared Google Sheet webhook (captures all signups, tagged by source).
+    // 1. Log to the shared signup webhook (captures all signups, tagged by source).
     const sheetWebhook = process.env.GOOGLE_SHEET_WEBHOOK;
     if (sheetWebhook) {
       try {
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
           redirect: "manual",
         });
 
-        // Google Apps Script returns 302 → follow the redirect manually.
+        // The webhook returns 302 → follow the redirect manually.
         if (sheetRes.status === 302 || sheetRes.status === 301) {
           const redirectUrl = sheetRes.headers.get("location");
           if (redirectUrl) {

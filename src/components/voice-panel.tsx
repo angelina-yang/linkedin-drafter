@@ -123,7 +123,7 @@ function FormatField({
         ✂️ Format
       </h2>
       <p className="mt-0.5 text-xs" style={{ color: "var(--text-muted)" }}>
-        How to structure the post.
+        How to structure the post. Want something else? Describe it in <strong>Additional instructions</strong> below.
       </p>
       <div className="mt-2 flex flex-wrap gap-2">
         {FORMAT_PRESETS.map((preset) => (

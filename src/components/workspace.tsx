@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { WelcomeModal } from "./welcome-modal";
-import { ApiKeyPanel } from "./api-key-panel";
+import { AppHeader } from "./app-header";
+import { SettingsModal } from "./settings-modal";
 import { SourceList, newEmptySource, type Source } from "./source-list";
 import { VoicePanel } from "./voice-panel";
 import { MakeItYours } from "./make-it-yours";
@@ -11,6 +12,7 @@ import { VariantTabs } from "./variant-tabs";
 import { UpsellModal } from "./upsell-modal";
 import { ContactFormModal } from "./contact-form-modal";
 import type { UpsellTrigger } from "./source-list";
+import { readApiKey } from "@/lib/storage";
 import type { FormatId } from "@/lib/archetypes";
 import { replaceHook } from "@/lib/prompts";
 import {
@@ -69,9 +71,11 @@ export function Workspace() {
     initialMessage?: string;
     context?: string;
   } | null>(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   useEffect(() => {
     setIdentity(readIdentity());
+    setApiKey(readApiKey());
     setGoal(readGoal());
     const savedFormat = readFormat();
     if (savedFormat) setFormat(savedFormat);
@@ -285,14 +289,7 @@ export function Workspace() {
 
       {identity && (
         <div className="flex flex-col gap-6">
-          <header className="flex flex-col gap-1">
-            <h1 className="text-3xl font-semibold">TL;IN</h1>
-            <p className="text-sm" style={{ color: "var(--text-muted)" }}>
-              Turn articles, videos, and notes into LinkedIn posts that sound like you.
-            </p>
-          </header>
-
-          <ApiKeyPanel onChange={setApiKey} />
+          <AppHeader hasApiKey={Boolean(apiKey)} onOpenSettings={() => setSettingsOpen(true)} />
 
           <SourceList
             sources={sources}
@@ -426,6 +423,12 @@ export function Workspace() {
             userEmail={identity?.email}
             context={contactForm?.context}
             onClose={() => setContactForm(null)}
+          />
+
+          <SettingsModal
+            isOpen={settingsOpen}
+            onClose={() => setSettingsOpen(false)}
+            onApiKeyChange={setApiKey}
           />
         </div>
       )}

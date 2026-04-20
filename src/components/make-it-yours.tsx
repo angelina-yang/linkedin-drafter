@@ -3,8 +3,8 @@
 import { useState } from "react";
 
 const MAX_EXAMPLES = 5;
-const MAX_EXAMPLE_CHARS = 3000;
-const MAX_INSTRUCTIONS_CHARS = 2000;
+const MAX_EXAMPLE_CHARS = 5000;
+const MAX_INSTRUCTIONS_CHARS = 10000;
 
 interface Props {
   examples: string[];
@@ -109,14 +109,14 @@ export function MakeItYours({
               🗒️ Additional instructions
             </h3>
             <p className="mt-0.5 text-xs" style={{ color: "var(--text-muted)" }}>
-              Brand voice, audience, things to avoid. Optional. Saved in your browser.
+              Brand voice, audience, things to avoid, or a custom post structure. Optional. Saved in your browser.
             </p>
             <textarea
               value={instructions}
               onChange={(e) =>
                 onInstructionsChange(e.target.value.slice(0, MAX_INSTRUCTIONS_CHARS))
               }
-              placeholder={'e.g., "I write for solo founders. Avoid corporate buzzwords. Mention TwoSetAI when relevant."'}
+              placeholder={'e.g., "I write for solo founders. Avoid corporate buzzwords." Or: "Structure as a before-after with one concrete number."'}
               rows={4}
               className="mt-2 w-full rounded px-3 py-2 text-sm focus:outline-none"
               style={{

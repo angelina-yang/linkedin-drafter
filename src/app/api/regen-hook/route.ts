@@ -14,8 +14,8 @@ export const maxDuration = 30;
 const MAX_REGENS_PER_HOUR = 60;
 const MAX_POST_CHARS = 4000;
 const MAX_GOAL_CHARS = 500;
-const MAX_INSTRUCTIONS_CHARS = 2000;
-const MAX_EXAMPLE_CHARS = 3000;
+const MAX_INSTRUCTIONS_CHARS = 10000;
+const MAX_EXAMPLE_CHARS = 5000;
 const MAX_EXAMPLES = 5;
 
 const MODEL_QUICK = "claude-haiku-4-5-20251001";

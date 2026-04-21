@@ -30,17 +30,19 @@ export function ContactFormModal({
   const [done, setDone] = useState(false);
 
   // Reset form each time it opens with a fresh subject/prefill.
+  // Intentionally do NOT prefill replyTo — users should opt into sharing their
+  // email. The registered email stays in our Google Sheet, not in this form.
   useEffect(() => {
     if (isOpen) {
       setSubject(initialSubject);
       setMessage(initialMessage ?? "");
-      setReplyTo(userEmail ?? "");
+      setReplyTo("");
       setHoneypot("");
       setError(null);
       setDone(false);
       setSubmitting(false);
     }
-  }, [isOpen, initialSubject, initialMessage, userEmail]);
+  }, [isOpen, initialSubject, initialMessage]);
 
   if (!isOpen) return null;
 
@@ -113,8 +115,9 @@ export function ContactFormModal({
         {done ? (
           <div className="space-y-3">
             <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-              Got it. Angelina will get back to you at{" "}
-              <span style={{ color: "var(--text-primary)" }}>{replyTo || "your email on file"}</span>.
+              {replyTo
+                ? <>Got it. Angelina will reply at <span style={{ color: "var(--text-primary)" }}>{replyTo}</span>.</>
+                : "Got it. Thanks for the signal — no reply since you didn't leave an email."}
             </p>
             <button
               type="button"
@@ -167,13 +170,13 @@ export function ContactFormModal({
 
             <div>
               <label className="block text-xs mb-1" style={{ color: "var(--text-secondary)" }}>
-                Reply to (optional)
+                Your email (optional — only if you want a reply)
               </label>
               <input
                 type="email"
                 value={replyTo}
                 onChange={(e) => setReplyTo(e.target.value.slice(0, 320))}
-                placeholder="you@example.com"
+                placeholder="Leave blank if no reply needed"
                 className="w-full rounded px-3 py-2 text-sm"
                 style={{
                   background: "var(--bg-input)",

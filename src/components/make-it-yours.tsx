@@ -3,7 +3,8 @@
 import { useState } from "react";
 
 const MAX_EXAMPLES = 5;
-const MAX_EXAMPLE_CHARS = 5000;
+// 3000 is LinkedIn's actual post-length cap; +500 buffer for copy-paste junk.
+const MAX_EXAMPLE_CHARS = 3500;
 const MAX_INSTRUCTIONS_CHARS = 10000;
 
 interface Props {

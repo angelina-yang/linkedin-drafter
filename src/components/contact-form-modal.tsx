@@ -23,20 +23,15 @@ export function ContactFormModal({
 }: Props) {
   const [subject, setSubject] = useState(initialSubject);
   const [message, setMessage] = useState(initialMessage ?? "");
-  const [replyTo, setReplyTo] = useState(userEmail ?? "");
   const [honeypot, setHoneypot] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
 
-  // Reset form each time it opens with a fresh subject/prefill.
-  // Intentionally do NOT prefill replyTo — users should opt into sharing their
-  // email. The registered email stays in our Google Sheet, not in this form.
   useEffect(() => {
     if (isOpen) {
       setSubject(initialSubject);
       setMessage(initialMessage ?? "");
-      setReplyTo("");
       setHoneypot("");
       setError(null);
       setDone(false);
@@ -63,7 +58,11 @@ export function ContactFormModal({
         body: JSON.stringify({
           subject: subject.trim(),
           message: message.trim(),
-          replyTo: replyTo.trim() || undefined,
+          // Auto-attach the user's registered email so every submission is
+          // reply-able. No visible field — the email is already in our system
+          // from the welcome-modal signup; this just stamps it on the message
+          // so Angelina knows who sent what.
+          replyTo: userEmail?.trim() || undefined,
           context,
           honeypot,
         }),
@@ -115,9 +114,13 @@ export function ContactFormModal({
         {done ? (
           <div className="space-y-3">
             <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-              {replyTo
-                ? <>Got it. Angelina will reply at <span style={{ color: "var(--text-primary)" }}>{replyTo}</span>.</>
-                : "Got it. Thanks for the signal — no reply since you didn't leave an email."}
+              Got it. Angelina will reply at the email you registered with
+              {userEmail ? (
+                <>
+                  {" "}(<span style={{ color: "var(--text-primary)" }}>{userEmail}</span>)
+                </>
+              ) : null}
+              .
             </p>
             <button
               type="button"
@@ -168,24 +171,6 @@ export function ContactFormModal({
               </div>
             </div>
 
-            <div>
-              <label className="block text-xs mb-1" style={{ color: "var(--text-secondary)" }}>
-                Your email (optional — only if you want a reply)
-              </label>
-              <input
-                type="email"
-                value={replyTo}
-                onChange={(e) => setReplyTo(e.target.value.slice(0, 320))}
-                placeholder="Leave blank if no reply needed"
-                className="w-full rounded px-3 py-2 text-sm"
-                style={{
-                  background: "var(--bg-input)",
-                  border: "1px solid var(--border-secondary)",
-                  color: "var(--text-primary)",
-                }}
-              />
-            </div>
-
             {/* Honeypot — hidden from users, bots fill it and get silently dropped. */}
             <div
               aria-hidden="true"
@@ -215,6 +200,12 @@ export function ContactFormModal({
                 {error}
               </p>
             )}
+
+            {userEmail ? (
+              <p className="text-[11px]" style={{ color: "var(--text-faint)" }}>
+                We&apos;ll reply to the email you registered with (<span style={{ color: "var(--text-muted)" }}>{userEmail}</span>).
+              </p>
+            ) : null}
 
             <button
               type="submit"

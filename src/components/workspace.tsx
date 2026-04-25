@@ -387,6 +387,15 @@ export function Workspace() {
               >
                 Request a feature
               </button>
+              <a
+                href={`https://www.delphi.ai/angelina-yang?message=${encodeURIComponent("I'm having an issue with TL;IN: ")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+                title="Report an issue — opens Angelina's Delphi"
+              >
+                Something not working?
+              </a>
               <button
                 type="button"
                 onClick={() => {

@@ -5,6 +5,11 @@ import { useEffect, useState } from "react";
 const LINKEDIN_MAX_CHARS = 3000;
 const SEE_MORE_CUTOFF = 210;
 
+// Sibling Lab tool that turns a LinkedIn post into a swipeable PDF carousel.
+// We hand off via URL params: post (URL-encoded), angle (defaults to "decide"),
+// autorun=1 (auto-trigger Generate after prefill), source=tlin (analytics).
+const CAROUSEL_URL = "https://carousel.heroesbehind.ai/";
+
 interface Props {
   variants: string[];
   regenHookCost: string;
@@ -74,7 +79,10 @@ export function VariantTabs({
             </button>
           ))}
         </div>
-        <CopyButton text={variants[active] ?? ""} />
+        <div className="flex items-center gap-2">
+          <CarouselButton text={variants[active] ?? ""} />
+          <CopyButton text={variants[active] ?? ""} />
+        </div>
       </div>
 
       <DraftEditor text={variants[active] ?? ""} onChange={(t) => onEdit(active, t)} />
@@ -167,6 +175,37 @@ function DraftEditor({ text, onChange }: EditorProps) {
         </span>
       </div>
     </div>
+  );
+}
+
+function CarouselButton({ text }: { text: string }) {
+  const handleClick = () => {
+    if (!text) return;
+    const params = new URLSearchParams({
+      post: text,
+      angle: "decide",
+      autorun: "1",
+      source: "tlin",
+    });
+    const url = `${CAROUSEL_URL}?${params.toString()}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={handleClick}
+      disabled={!text}
+      className="rounded px-3 py-1 text-xs font-medium transition-colors disabled:opacity-40"
+      style={{
+        background: "var(--bg-input)",
+        border: "1px solid var(--border-secondary)",
+        color: "var(--text-primary)",
+      }}
+      title="Open this draft in Carousel;IN as a swipeable PDF"
+    >
+      Carousel ↗
+    </button>
   );
 }
 

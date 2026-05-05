@@ -8,7 +8,7 @@ const SEE_MORE_CUTOFF = 210;
 // Sibling Lab tool that turns a LinkedIn post into a swipeable PDF carousel.
 // We hand off via URL params: post (URL-encoded), angle (defaults to "decide"),
 // autorun=1 (auto-trigger Generate after prefill), source=tlin (analytics).
-const CAROUSEL_URL = "https://carousel.heroesbehind.ai/";
+const CAROUSEL_URL = "https://carousel.twosetai.com/";
 
 interface Props {
   variants: string[];

@@ -336,6 +336,7 @@ export function Workspace() {
               disabled={!canGenerate}
               className="rounded-lg px-4 py-2 text-sm font-semibold text-white disabled:opacity-40"
               style={{ background: "var(--accent)" }}
+              title="Charged directly to your Anthropic account. We do not see or control this charge."
             >
               {generating ? "Drafting…" : `Generate ${readyCount > 1 ? "synthesis" : "post"}`}
             </button>

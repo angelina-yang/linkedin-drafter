@@ -99,7 +99,7 @@ export function VariantTabs({
               border: "1px solid var(--border-secondary)",
               color: "var(--text-primary)",
             }}
-            title="Regenerate only the opening 1-2 lines — cheap, preserves the body"
+            title="Regenerate only the opening 1-2 lines. Cheap, preserves the body. Charged directly to your Anthropic account. We do not see or control this charge."
           >
             {busy === "hook" ? "Regenerating hook…" : `↻ Regen hook (${regenHookCost})`}
           </button>
@@ -113,7 +113,7 @@ export function VariantTabs({
               border: "1px solid var(--border-secondary)",
               color: "var(--text-primary)",
             }}
-            title="Regenerate this whole variant with the same context"
+            title="Regenerate this whole variant with the same context. Charged directly to your Anthropic account. We do not see or control this charge."
           >
             {busy === "full" ? "Regenerating…" : `↻ Regen full (${regenFullCost})`}
           </button>
